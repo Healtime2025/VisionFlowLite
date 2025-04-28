@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Commander | VisionFlowLite</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #eef2f7, #d9e2ec);
+      padding: 20px;
+      color: #333;
+    }
+    .task-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    .field {
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+    select, input, textarea, button {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .notes-thread {
+      background: #f9fafb;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .note-entry {
+      margin-bottom: 10px;
+    }
+    .timestamp {
+      font-size: 12px;
+      color: gray;
+      margin-top: 5px;
+    }
+    .upload-section {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="task-card">
+  <h2>🛡️ Royal Task Commander</h2>
+
+  <div class="field">
+    <label>Task Name</label>
+    <input type="text" id="taskName" placeholder="Enter task name...">
+  </div>
+
+  <div class="field">
+    <label>Status</label>
+    <select id="taskStatus">
+      <option>To Do</option>
+      <option>In Progress</option>
+      <option>Under Review</option>
+      <option>Completed</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Assigned To</label>
+    <select id="assignedTo">
+      <option>Unassigned</option>
+      <option>Commander Sol</option>
+      <option>Captain Mira</option>
+      <option>General Lux</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Notes / Conversation</label>
+    <div class="notes-thread" id="notesThread"></div>
+    <textarea id="newNote" placeholder="Write a new comment..."></textarea>
+    <button onclick="addNote()">Add Comment</button>
+  </div>
+
+  <div class="upload-section">
+    <label>Attachments (Coming Soon)</label>
+    <input type="file" disabled>
+  </div>
+
+  <div class="timestamp" id="lastUpdated">Last updated: Never</div>
+
+</div>
+
+<script>
+function addNote() {
+  const noteText = document.getElementById('newNote').value;
+  if(noteText.trim() !== '') {
+    const thread = document.getElementById('notesThread');
+    const timestamp = new Date().toLocaleString();
+    const noteEntry = document.createElement('div');
+    noteEntry.className = 'note-entry';
+    noteEntry.innerHTML = `<strong>You:</strong> ${noteText} <div class='timestamp'>${timestamp}</div>`;
+    thread.appendChild(noteEntry);
+    document.getElementById('newNote').value = '';
+    updateTimestamp();
+  }
+}
+
+function updateTimestamp() {
+  const now = new Date().toLocaleString();
+  document.getElementById('lastUpdated').innerText = `Last updated: ${now}`;
+}
+</script>
+
+</body>
+</html>
+
