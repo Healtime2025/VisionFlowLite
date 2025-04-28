@@ -1,160 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Submit Task – VisionFlow</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Task | VisionFlowLite</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f9ff;
+      background: linear-gradient(to right, #eef2f7, #d9e2ec);
+      padding: 20px;
       margin: 0;
-      padding: 0;
+      color: #333;
+      text-align: center;
     }
     header {
       background: #1976d2;
       color: white;
       padding: 15px;
-      text-align: center;
+      font-size: 1.5rem;
     }
     nav {
       background: #e3e9f5;
       padding: 10px;
-      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
     }
     nav a {
-      margin: 0 15px;
+      margin: 5px 10px;
       text-decoration: none;
       color: #1976d2;
       font-weight: bold;
     }
-    form {
+    .task-form {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
       max-width: 600px;
       margin: 30px auto;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+    .field {
+      margin-bottom: 15px;
     }
     label {
+      font-weight: bold;
       display: block;
-      margin-top: 15px;
-      font-weight: bold;
+      margin-bottom: 5px;
     }
-    input, textarea, select {
+    select, input, textarea, button {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 6px;
+      padding: 8px;
       border: 1px solid #ccc;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px 25px;
-      background-color: #1976d2;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #145a9e;
-    }
-    #message {
-      max-width: 600px;
-      margin: 20px auto;
-      padding: 10px;
-      border-radius: 6px;
-      font-weight: bold;
-      text-align: center;
-      display: none;
-    }
-    .success {
-      background-color: #e0f5e9;
-      color: #2e7d32;
-      border: 1px solid #81c784;
-    }
-    .error {
-      background-color: #fdecea;
-      color: #d32f2f;
-      border: 1px solid #f44336;
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
-  <header>📋 Submit Task</header>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="tasks.html">Submit Task</a>
-    <a href="projects.html">Add Project</a>
-  </nav>
 
-  <form id="taskForm">
+<header>
+  <img src="icon-192.png" style="height:30px;vertical-align:middle;margin-right:10px;"> Submit Task
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="tasks.html">Submit Task</a>
+  <a href="projects.html">Add Project</a>
+  <a href="task-commander.html">Command Centre</a>
+  <a href="project-commander.html">Project Commander</a>
+</nav>
+
+<div class="task-form">
+  <h2>📝 Task Submission</h2>
+
+  <div class="field">
     <label>Project Name</label>
-    <input type="text" name="project" required />
+    <input type="text" placeholder="Project name...">
+  </div>
 
+  <div class="field">
     <label>Task Title</label>
-    <input type="text" name="task" required />
+    <input type="text" placeholder="Task title...">
+  </div>
 
+  <div class="field">
     <label>Task Owner Email</label>
-    <input type="email" name="owner" required />
+    <input type="email" placeholder="Owner email...">
+  </div>
 
+  <div class="field">
     <label>Due Date</label>
-    <input type="date" name="dueDate" required />
+    <input type="date">
+  </div>
 
+  <div class="field">
     <label>Priority</label>
-    <select name="priority">
-      <option value="High">🔥 High</option>
-      <option value="Normal" selected>🔵 Normal</option>
-      <option value="Low">🌿 Low</option>
+    <select>
+      <option>Normal</option>
+      <option>High</option>
+      <option>Critical</option>
     </select>
+  </div>
 
+  <div class="field">
     <label>Task Type</label>
-    <select name="type">
-      <option value="General">📦 General</option>
-      <option value="Site">🏗️ Site</option>
-      <option value="Client">👤 Client</option>
-      <option value="Logistics">🚚 Logistics</option>
-      <option value="Quote">📝 Quote</option>
+    <select>
+      <option>General</option>
+      <option>Development</option>
+      <option>Testing</option>
+      <option>Review</option>
     </select>
+  </div>
 
+  <div class="field">
     <label>Notes</label>
-    <textarea name="notes" rows="4" placeholder="Instructions, reminders, context..."></textarea>
+    <textarea placeholder="Notes for this task..."></textarea>
+  </div>
 
-    <button type="submit">➕ Add Task</button>
-  </form>
+  <button>Submit Task</button>
 
-  <div id="message"></div>
+</div>
 
-  <script>
-    const form = document.getElementById("taskForm");
-    const messageBox = document.getElementById("message");
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      messageBox.style.display = "none";
-
-      const formData = new FormData(form);
-      const scriptURL = "https://script.google.com/macros/s/AKfycbwtX5PGukY4yyPnIeRfxtloCc-v-Xr-YREjh0hriuLVvhPWqEvDToLljvugEybx_oNH/exec";
-
-      try {
-        const res = await fetch(scriptURL, {
-          method: "POST",
-          body: formData
-        });
-        const text = await res.text();
-        messageBox.textContent = text;
-        messageBox.className = "success";
-        messageBox.style.display = "block";
-        form.reset();
-      } catch (err) {
-        messageBox.textContent = "❌ Submission failed: " + err.message;
-        messageBox.className = "error";
-        messageBox.style.display = "block";
-      }
-    });
-  </script>
 </body>
 </html>
