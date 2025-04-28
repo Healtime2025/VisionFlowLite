@@ -3,13 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Task Commander | VisionFlowLite</title>
+  <title>Royal Task Commander | VisionFlowLite</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(to right, #eef2f7, #d9e2ec);
       padding: 20px;
+      margin: 0;
       color: #333;
+      text-align: center;
+    }
+    header {
+      background: #1976d2;
+      color: white;
+      padding: 15px;
+      font-size: 1.5rem;
+    }
+    nav {
+      background: #e3e9f5;
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    nav a {
+      margin: 5px 10px;
+      text-decoration: none;
+      color: #1976d2;
+      font-weight: bold;
     }
     .task-card {
       background: #fff;
@@ -17,7 +38,8 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 20px;
       max-width: 800px;
-      margin: auto;
+      margin: 30px auto;
+      text-align: left;
     }
     .field {
       margin-bottom: 15px;
@@ -57,8 +79,21 @@
 </head>
 <body>
 
+<header>
+  <img src="icon-192.png" style="height:30px;vertical-align:middle;margin-right:10px;"> Royal Task Commander
+</header>
+
+<!-- 🚀 Royal Menu Bar -->
+<nav>
+  <a href="index.html">Home</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="tasks.html">Submit Task</a>
+  <a href="projects.html">Add Project</a>
+  <a href="task-commander.html">Command Centre</a>
+</nav>
+
 <div class="task-card">
-  <h2>🛡️ Royal Task Commander</h2>
+  <h2>🛡️ Task Details</h2>
 
   <div class="field">
     <label>Task Name</label>
@@ -104,7 +139,7 @@
 <script>
 function addNote() {
   const noteText = document.getElementById('newNote').value;
-  if(noteText.trim() !== '') {
+  if (noteText.trim() !== '') {
     const thread = document.getElementById('notesThread');
     const timestamp = new Date().toLocaleString();
     const noteEntry = document.createElement('div');
