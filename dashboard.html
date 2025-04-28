@@ -163,6 +163,13 @@
 
 <div id="chart_div"></div>
 
+<!-- 🚀 Royal Task Commander Button -->
+<div style="text-align: center; margin-top: 20px;">
+  <a href="task-commander.html" target="_blank" style="padding: 12px 20px; background-color: #1976d2; color: white; border-radius: 8px; text-decoration: none; font-weight: bold;">
+    🚀 Open Royal Task Commander
+  </a>
+</div>
+
 <script>
   google.charts.load('current', {'packages':['corechart']});
   google.charts.setOnLoadCallback(drawChart);
@@ -186,17 +193,11 @@
     var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
     chart.draw(data, options);
   }
-<div style="text-align: center; margin-top: 20px;">
-  <a href="task-commander.html" style="padding: 12px 20px; background-color: #1976d2; color: white; border-radius: 8px; text-decoration: none; font-weight: bold;">
-    🚀 Open Royal Task Commander
-  </a>
-</div>
-  
+
   const darkButton = document.getElementById('darkToggle');
   darkButton.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
   });
-
 </script>
 
 </body>
