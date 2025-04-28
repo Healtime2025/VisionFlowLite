@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1976d2">
+  <title>VisionFlow Dashboard</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f9ff;
+      margin: 0;
+      text-align: center;
+      transition: background 0.3s, color 0.3s;
+    }
+    header {
+      background: #1976d2;
+      color: white;
+      padding: 15px;
+      font-size: 1.5rem;
+    }
+    nav {
+      background: #e3e9f5;
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    nav a {
+      margin: 5px 10px;
+      text-decoration: none;
+      color: #1976d2;
+      font-weight: bold;
+    }
+    .snapshot {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px auto;
+      gap: 20px;
+    }
+    .card {
+      background: #1976d2;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+    .table-container {
+      width: 95%;
+      overflow-x: auto;
+      margin: 20px auto;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+    th {
+      background: #1976d2;
+      color: white;
+    }
+    #chart_div {
+      width: 90%;
+      max-width: 600px;
+      margin: 30px auto;
+    }
+    .dark-mode {
+      background: #121212;
+      color: #e0e0e0;
+    }
+    .dark-mode nav {
+      background: #333;
+    }
+    .dark-mode nav a {
+      color: #90caf9;
+    }
+    .dark-mode .card {
+      background: #333;
+      color: #90caf9;
+    }
+    .dark-mode .table-container {
+      background: #1e1e1e;
+    }
+    .dark-mode table {
+      color: #e0e0e0;
+    }
+    .dark-mode th {
+      background: #444;
+      color: #90caf9;
+    }
+    #darkToggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #1976d2;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      header { font-size: 1.2rem; }
+      nav { flex-direction: column; }
+      nav a { margin: 5px 0; }
+      .snapshot { flex-direction: column; }
+      table, th, td { font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="icon-192.png" style="height:30px;vertical-align:middle;margin-right:10px;"> VisionFlow Dashboard
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="tasks.html">Submit Task</a>
+  <a href="projects.html">Add Project</a>
+</nav>
+
+<button id="darkToggle">🌙 Toggle Dark Mode</button>
+
+<div class="snapshot" id="snapshot">
+  <div class="card" id="projectsCount">Projects: ...</div>
+  <div class="card" id="tasksCount">Tasks: ...</div>
+</div>
+
+<h2>📋 Active Projects Overview</h2>
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Project Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Owner</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Rekorda</td><td>15/4/2025</td><td>8/5/2025</td><td>smoriti@gmail.com</td><td>Active</td></tr>
+      <tr><td>Vision Flow</td><td>15/4/2026</td><td>8/6/2025</td><td>smoriti@gmail.com</td><td>Active</td></tr>
+      <tr><td>MedIntelix</td><td>15/4/2027</td><td>8/7/2025</td><td>Dave</td><td>Active</td></tr>
+      <tr><td>EduCycle</td><td>15/4/2030</td><td>8/10/2025</td><td>smoriti@gmail.com</td><td>Active</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="chart_div"></div>
+
+<script>
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+      ['Status', 'Projects'],
+      ['Active', 12],
+      ['Planning', 2],
+      ['Paused', 1]
+    ]);
+
+    var options = {
+      title: 'Project Status Overview',
+      pieHole: 0.4,
+      colors: ['#1976d2', '#f4b400', '#db4437'],
+      chartArea: {width: '80%', height: '70%'},
+      legend: {position: 'bottom'}
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+
+  const darkButton = document.getElementById('darkToggle');
+  darkButton.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+  });
+
+</script>
+
+</body>
+</html>
