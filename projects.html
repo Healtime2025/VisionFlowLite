@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Project – VisionFlow</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f9ff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #1976d2;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    nav {
+      background: #e3e9f5;
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    nav a {
+      margin: 5px 10px;
+      text-decoration: none;
+      color: #1976d2;
+      font-weight: bold;
+    }
+    form {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 25px;
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #145a9e;
+    }
+    #message {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      text-align: center;
+      display: none;
+    }
+    .success {
+      background-color: #e0f5e9;
+      color: #2e7d32;
+      border: 1px solid #81c784;
+    }
+    .error {
+      background-color: #fdecea;
+      color: #d32f2f;
+      border: 1px solid #f44336;
+    }
+    @media (max-width: 600px) {
+      header {
+        font-size: 1.2rem;
+      }
+      nav {
+        flex-direction: column;
+      }
+      nav a {
+        margin: 5px 0;
+      }
+      form, input, textarea, select {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>🏗️ Add New Project</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="tasks.html">Submit Task</a>
+  <a href="projects.html">Add Project</a>
+</nav>
+
+<form id="projectForm">
+  <label>Project Name</label>
+  <input type="text" name="name" placeholder="e.g., Rekorda" required />
+
+  <label>Start Date</label>
+  <input type="date" name="start" required />
+
+  <label>End Date</label>
+  <input type="date" name="end" required />
+
+  <label>Project Owner (Email)</label>
+  <input type="email" name="owner" placeholder="someone@email.com" required />
+
+  <label>Status</label>
+  <select name="status" required>
+    <option value="Active" selected>Active</option>
+    <option value="Planning">Planning</option>
+    <option value="Paused">Paused</option>
+  </select>
+
+  <label>Budget (ZAR)</label>
+  <input type="number" name="budget" placeholder="Amount in ZAR" />
+
+  <label>Description</label>
+  <textarea name="description" rows="4" placeholder="Short project notes..."></textarea>
+
+  <button type="submit">➕ Add Project</button>
+</form>
+
+<div id="message"></div>
+
+<script>
+  const form = document.getElementById("projectForm");
+  const messageBox = document.getElementById("message");
+
+  const scriptURL = "https://script.google.com/macros/s/AKfycbwtX5PGukY4yyPnIeRfxtloCc-v-Xr-YREjh0hriuLVvhPWqEvDToLljvugEybx_oNH/exec";
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    messageBox.style.display = "none";
+
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch(scriptURL, {
+        method: "POST",
+        body: formData
+      });
+      const text = await res.text();
+      messageBox.textContent = "✅ Project successfully added!";
+      messageBox.className = "success";
+      messageBox.style.display = "block";
+      form.reset();
+    } catch (err) {
+      messageBox.textContent = "❌ Submission failed: " + err.message;
+      messageBox.className = "error";
+      messageBox.style.display = "block";
+    }
+  });
+</script>
+
+</body>
+</html>
