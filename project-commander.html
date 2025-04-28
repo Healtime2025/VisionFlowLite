@@ -146,7 +146,7 @@
 
 <script>
 // === SETTINGS ===
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzUVlwUwIJim2ZQd73aKCRq8-ypobne_T7PuOl44Q2XOilf6Ktvq9IJWkfjeiegI8w6/exec"; // Replace with your deployed Web App URL
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzUVlwUwIJim2ZQd73aKCRq8-ypobne_T7PuOl44Q2XOilf6Ktvq9IJWkfjeiegI8w6/exec"; // Already correct based on your code
 
 function addProjectNote() {
   const noteText = document.getElementById('newNote').value;
@@ -183,7 +183,7 @@ function saveProject() {
     end: document.getElementById('endDate').value,
     owner: document.getElementById('assignedOwner').value.trim(),
     status: document.getElementById('projectStatus').value,
-    budget: "", // You can add budget field later if needed
+    budget: "", // optional field reserved
     description: gatherNotes()
   };
 
@@ -197,8 +197,8 @@ function saveProject() {
     alert('✅ ' + msg);
     updateTimestamp();
   })
-  .catch(err => {
-    alert('❌ Save failed: ' + err);
+  .catch(error => {
+    alert('❌ Error saving project: ' + error);
   });
 }
 </script>
