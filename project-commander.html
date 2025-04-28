@@ -72,6 +72,16 @@
       color: gray;
       margin-top: 5px;
     }
+    #saveButton {
+      background-color: #1976d2;
+      color: white;
+      font-weight: bold;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -131,9 +141,13 @@
 
   <div class="timestamp" id="lastUpdated">Last updated: Never</div>
 
+  <button id="saveButton" onclick="saveProject()">🚀 Save Project</button>
 </div>
 
 <script>
+// === SETTINGS ===
+const WEBAPP_URL = "YOUR_WEB_APP_URL_HERE"; // Replace with your deployed Web App URL
+
 function addProjectNote() {
   const noteText = document.getElementById('newNote').value;
   if (noteText.trim() !== '') {
@@ -151,6 +165,41 @@ function addProjectNote() {
 function updateTimestamp() {
   const now = new Date().toLocaleString();
   document.getElementById('lastUpdated').innerText = `Last updated: ${now}`;
+}
+
+function gatherNotes() {
+  const notes = document.querySelectorAll('.note-entry');
+  let conversation = '';
+  notes.forEach(note => {
+    conversation += note.innerText.trim() + '\n';
+  });
+  return conversation.trim();
+}
+
+function saveProject() {
+  const projectData = {
+    name: document.getElementById('projectName').value.trim(),
+    start: document.getElementById('startDate').value,
+    end: document.getElementById('endDate').value,
+    owner: document.getElementById('assignedOwner').value.trim(),
+    status: document.getElementById('projectStatus').value,
+    budget: "", // You can add budget field later if needed
+    description: gatherNotes()
+  };
+
+  fetch(WEBAPP_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ project: projectData })
+  })
+  .then(response => response.text())
+  .then(msg => {
+    alert('✅ ' + msg);
+    updateTimestamp();
+  })
+  .catch(err => {
+    alert('❌ Save failed: ' + err);
+  });
 }
 </script>
 
