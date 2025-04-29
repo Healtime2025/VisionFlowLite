@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Submit Task | VisionFlowLite</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Task | VisionFlow</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -55,12 +55,19 @@
       border: 1px solid #ccc;
       border-radius: 8px;
     }
+    button {
+      background: #1976d2;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <img src="icon-192.png" style="height:30px;vertical-align:middle;margin-right:10px;"> Submit Task
+  <img src="icon-192.png" style="height:30px;vertical-align:middle;margin-right:10px;" />
+  Submit Task
 </header>
 
 <nav>
@@ -70,58 +77,85 @@
   <a href="projects.html">Add Project</a>
   <a href="task-commander.html">Command Centre</a>
   <a href="project-commander.html">Project Commander</a>
+  <a href="gantt.html">Gantt Chart</a>
+  <a href="export-dashboard.html">Export</a>
 </nav>
 
 <div class="task-form">
   <h2>📝 Task Submission</h2>
 
-  <div class="field">
-    <label>Project Name</label>
-    <input type="text" placeholder="Project name...">
-  </div>
+  <form id="taskForm">
+    <div class="field">
+      <label>Project Name</label>
+      <input type="text" name="Project" required placeholder="Project name..." />
+    </div>
 
-  <div class="field">
-    <label>Task Title</label>
-    <input type="text" placeholder="Task title...">
-  </div>
+    <div class="field">
+      <label>Task Title</label>
+      <input type="text" name="Task" required placeholder="Task title..." />
+    </div>
 
-  <div class="field">
-    <label>Task Owner Email</label>
-    <input type="email" placeholder="Owner email...">
-  </div>
+    <div class="field">
+      <label>Task Owner Email</label>
+      <input type="email" name="Owner" required placeholder="Owner email..." />
+    </div>
 
-  <div class="field">
-    <label>Due Date</label>
-    <input type="date">
-  </div>
+    <div class="field">
+      <label>Due Date</label>
+      <input type="date" name="DueDate" required />
+    </div>
 
-  <div class="field">
-    <label>Priority</label>
-    <select>
-      <option>Normal</option>
-      <option>High</option>
-      <option>Critical</option>
-    </select>
-  </div>
+    <div class="field">
+      <label>Priority</label>
+      <select name="Priority">
+        <option value="Normal">Normal</option>
+        <option value="High">High</option>
+        <option value="Critical">Critical</option>
+      </select>
+    </div>
 
-  <div class="field">
-    <label>Task Type</label>
-    <select>
-      <option>General</option>
-      <option>Development</option>
-      <option>Testing</option>
-      <option>Review</option>
-    </select>
-  </div>
+    <div class="field">
+      <label>Task Type</label>
+      <select name="Type">
+        <option value="General">General</option>
+        <option value="Development">Development</option>
+        <option value="Testing">Testing</option>
+        <option value="Review">Review</option>
+      </select>
+    </div>
 
-  <div class="field">
-    <label>Notes</label>
-    <textarea placeholder="Notes for this task..."></textarea>
-  </div>
+    <div class="field">
+      <label>Notes</label>
+      <textarea name="Notes" placeholder="Any notes..."></textarea>
+    </div>
 
-  <button>Submit Task</button>
-
+    <button type="submit">Submit Task</button>
+  </form>
 </div>
+
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUVlwUwIJim2ZQd73aKCRq8-ypobne_T7PuOl44Q2XOilf6Ktvq9IJWkfjeiegI8w6/exec"; // Replace with your actual script URL
+
+  document.getElementById('taskForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => res.text())
+    .then(response => {
+      alert("✅ Task submitted successfully!");
+      document.getElementById('taskForm').reset();
+    })
+    .catch(error => {
+      alert("❌ Task submission failed.");
+      console.error("Error!", error.message);
+    });
+  });
+</script>
 
 </body>
 </html>
+
