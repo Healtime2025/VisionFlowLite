@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1976d2" />
   <title>VisionFlow | Export Dashboard</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
+      background: #f5f9ff;
       margin: 0;
-      background: #f4f7fc;
+      text-align: center;
+      color: #333;
     }
     header {
       background: #1976d2;
       color: white;
       padding: 15px;
-      text-align: center;
       font-size: 1.5rem;
     }
     nav {
@@ -25,53 +28,38 @@
       justify-content: center;
     }
     nav a {
-      margin: 5px 10px;
+      margin: 0 10px;
       text-decoration: none;
       color: #1976d2;
       font-weight: bold;
     }
-    .container {
-      padding: 30px;
-      text-align: center;
-    }
-    .export-card {
+    .table-container, #chart_div, #gantt_div {
+      margin: 30px auto;
+      width: 95%;
       background: white;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px;
       border-radius: 10px;
-      padding: 40px;
-      max-width: 600px;
-      margin: auto;
     }
-    .export-card h2 {
-      margin-bottom: 20px;
-      color: #1976d2;
+    table {
+      width: 100%;
+      border-collapse: collapse;
     }
-    .export-card button {
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
       background: #1976d2;
       color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    .export-card button:hover {
-      background: #145bb5;
-    }
-    @media print {
-      nav, header {
-        display: block !important;
-      }
-      .export-card button {
-        display: none;
-      }
     }
   </style>
 </head>
 <body>
 
 <header>
-  <img src="icon-192.png" style="height:30px; vertical-align:middle; margin-right:10px;"> VisionFlow | Export Center
+  <img src="icon-192.png" style="height:30px;vertical-align:middle;margin-right:10px;" /> VisionFlow | Export Center
 </header>
 
 <nav>
@@ -84,13 +72,123 @@
   <a href="gantt.html">Royal Gantt Chart</a>
 </nav>
 
-<div class="container">
-  <div class="export-card">
-    <h2>🖨️ Export Your Dashboard</h2>
-    <p>This will print or save your current dashboard and charts as a PDF.</p>
-    <button onclick="window.print()">Export Now</button>
-  </div>
+<div class="table-container">
+  <h2>📋 Project Overview</h2>
+  <table id="projectTable">
+    <thead>
+      <tr>
+        <th>Project Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Owner</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 </div>
+
+<div id="chart_div" style="height:400px;"></div>
+<div id="gantt_div" style="height:600px;"></div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUVlwUwIJim2ZQd73aKCRq8-ypobne_T7PuOl44Q2XOilf6Ktvq9IJWkfjeiegI8w6/exec";
+
+async function fetchProjects() {
+  const res = await fetch(`${SCRIPT_URL}?getProjects`);
+  return await res.json();
+}
+
+function populateTable(projects) {
+  const tbody = document.querySelector("#projectTable tbody");
+  tbody.innerHTML = "";
+  projects.forEach(p => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${p["Project Name"]}</td>
+      <td>${p["Start Date"]}</td>
+      <td>${p["End Date"]}</td>
+      <td>${p["Project Owner"]}</td>
+      <td>${p["Status"]}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+function drawDonutChart(projects) {
+  const counts = {};
+  projects.forEach(p => {
+    const status = p["Status"] || "Unknown";
+    counts[status] = (counts[status] || 0) + 1;
+  });
+  const dataArr = [['Status', 'Count']];
+  for (const [k, v] of Object.entries(counts)) {
+    dataArr.push([k, v]);
+  }
+  const data = google.visualization.arrayToDataTable(dataArr);
+  const options = {
+    title: 'Project Status Overview',
+    pieHole: 0.4,
+    legend: { position: 'bottom' },
+    chartArea: { width: '85%', height: '70%' }
+  };
+  new google.visualization.PieChart(document.getElementById('chart_div')).draw(data, options);
+}
+
+function drawGanttChart(projects) {
+  const data = new google.visualization.DataTable();
+  data.addColumn('string', 'Task ID');
+  data.addColumn('string', 'Task Name');
+  data.addColumn('string', 'Resource');
+  data.addColumn('date', 'Start Date');
+  data.addColumn('date', 'End Date');
+  data.addColumn('number', 'Duration');
+  data.addColumn('number', 'Percent Complete');
+  data.addColumn('string', 'Dependencies');
+
+  projects.forEach((p, i) => {
+    const start = new Date(p["Start Date"]);
+    const end = new Date(p["End Date"]);
+    const color = p["Status"] === "Paused" ? "#db4437" : p["Status"] === "Planning" ? "#f4b400" : "#1976d2";
+    data.addRow([
+      `T${i+1}`,
+      p["Project Name"],
+      color,
+      start,
+      end,
+      null,
+      100,
+      null
+    ]);
+  });
+
+  const options = {
+    height: 30 * projects.length + 50,
+    gantt: {
+      trackHeight: 30,
+      palette: [
+        { color: '#1976d2', dark: '#1565c0', light: '#42a5f5' },
+        { color: '#f4b400', dark: '#f09300', light: '#ffd54f' },
+        { color: '#db4437', dark: '#c62828', light: '#ef5350' }
+      ]
+    }
+  };
+
+  new google.visualization.Gantt(document.getElementById('gantt_div')).draw(data, options);
+}
+
+async function init() {
+  google.charts.load('current', {'packages':['corechart', 'gantt']});
+  google.charts.setOnLoadCallback(async () => {
+    const projects = await fetchProjects();
+    populateTable(projects);
+    drawDonutChart(projects);
+    drawGanttChart(projects);
+  });
+}
+
+init();
+</script>
 
 </body>
 </html>
