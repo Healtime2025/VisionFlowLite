@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VisionFlow Enterprise | Project Intelligence Redefined</title>
+  <style>
+    body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #f4f9ff; color: #333; }
+    header { background: #1976d2; padding: 20px; color: white; text-align: center; font-size: 2rem; }
+    section { padding: 40px 20px; max-width: 1000px; margin: auto; }
+    h2 { color: #1976d2; font-size: 1.8rem; margin-bottom: 20px; }
+    p { font-size: 1.1rem; line-height: 1.6; }
+    .features, .packages { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .card h3 { margin-top: 0; color: #1976d2; }
+    footer { text-align: center; background: #e3e9f5; padding: 20px; font-size: 0.9rem; color: #555; }
+    .cta { background: #1976d2; color: white; text-align: center; padding: 40px 20px; }
+    .cta a { background: white; color: #1976d2; padding: 12px 24px; font-weight: bold; text-decoration: none; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <header>VisionFlow Enterprise</header>
+  <section>
+    <h2>Unlock Elite Project Intelligence</h2>
+    <p>Built for agencies, enterprises, and government teams, VisionFlow Enterprise delivers the clarity, control, and customization your team needs — with no unnecessary bloat or per-user price traps. Own your platform. Empower your workflow.</p>
+  </section>
+
+  <section class="features">
+    <div class="card">
+      <h3>🧠 Commander Interfaces</h3>
+      <p>Task and Project Commanders for streamlined submission, tracking, notes, and progress updates — all built natively for clarity.</p>
+    </div>
+    <div class="card">
+      <h3>🛡️ Token-Based Security</h3>
+      <p>Royal Token Shield blocks spam, protects data, and ensures secure write access to your internal project sheets.</p>
+    </div>
+    <div class="card">
+      <h3>📊 Real-Time Dashboards</h3>
+      <p>Live visual analytics for executives and team leaders with Google-native syncing. Export reports on-demand.</p>
+    </div>
+    <div class="card">
+      <h3>🏷️ White Labeling</h3>
+      <p>Your brand, your domain, your colors. VisionFlow becomes YOUR platform. We simply power the engine.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Enterprise Packages</h2>
+    <div class="packages">
+      <div class="card">
+        <h3>Core Enterprise</h3>
+        <p><strong>R89,000/year</strong></p>
+        <ul>
+          <li>Commander Interfaces</li>
+          <li>Up to 50 Users</li>
+          <li>Shared Google Sheet Backend</li>
+          <li>Standard Branding</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Elite Enterprise</h3>
+        <p><strong>R149,000/year</strong></p>
+        <ul>
+          <li>Unlimited Users</li>
+          <li>Private Sheet Per Division</li>
+          <li>Custom Branding & Domain</li>
+          <li>Dashboard + PDF Reporting</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Custom Government</h3>
+        <p><strong>R250,000+</strong></p>
+        <ul>
+          <li>All Elite Features</li>
+          <li>Secure Cloud Folder Sync</li>
+          <li>On-Site Training</li>
+          <li>Policy Document Control</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta">
+    <h2>Book a Demo or Request a Proposal</h2>
+    <p>Let our Command Agents configure a perfect deployment for your team.</p>
+    <a href="mailto:visionflowintel@gmail.com">Request Demo</a>
+  </div>
+
+  <footer>
+    &copy; 2025 VisionFlow Enterprise. Powered by Mirror OS Intelligence Engine.
+  </footer>
+</body>
+</html>
