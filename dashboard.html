@@ -74,13 +74,10 @@
       max-width: 600px;
       margin: 30px auto;
     }
-    iframe {
-      width: 90%;
-      height: 500px;
-      border: none;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      margin-bottom: 40px;
+    #gantt_div {
+      margin: 30px auto;
+      width: 95%;
+      height: 400px;
     }
     .dark-mode {
       background: #121212;
@@ -106,17 +103,24 @@
       background: #444;
       color: #90caf9;
     }
-    #darkToggle {
+    #darkToggle, #exportBtn {
       position: fixed;
       top: 10px;
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+    }
+    #darkToggle {
       right: 10px;
       background: #1976d2;
       color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 0.9rem;
+    }
+    #exportBtn {
+      left: 10px;
+      background: #43a047;
+      color: white;
     }
     @media (max-width: 600px) {
       header { font-size: 1.2rem; }
@@ -140,10 +144,10 @@
   <a href="projects.html">Add Project</a>
   <a href="task-commander.html">Command Centre</a>
   <a href="project-commander.html">Project Commander</a>
-  <a href="gantt.html">Gantt Chart</a>
 </nav>
 
 <button id="darkToggle">🌙 Toggle Dark Mode</button>
+<button id="exportBtn">🖨️ Export Dashboard</button>
 
 <div class="snapshot" id="snapshot">
   <div class="card" id="projectsCount">Projects: ...</div>
@@ -167,88 +171,139 @@
 </div>
 
 <div id="chart_div"></div>
-
-<h2>📊 Gantt Overview</h2>
-<iframe src="gantt.html"></iframe>
+<h3>📊 Gantt Overview</h3>
+<div id="gantt_div"></div>
 
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUVlwUwIJim2ZQd73aKCRq8-ypobne_T7PuOl44Q2XOilf6Ktvq9IJWkfjeiegI8w6/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUVlwUwIJim2ZQd73aKCRq8-ypobne_T7PuOl44Q2XOilf6Ktvq9IJWkfjeiegI8w6/exec";
 
-  async function fetchCounts() {
-    const res = await fetch(`${SCRIPT_URL}?getCounts`);
-    return await res.json();
-  }
+async function fetchCounts() {
+  const res = await fetch(`${SCRIPT_URL}?getCounts`);
+  return await res.json();
+}
 
-  async function fetchProjects() {
-    const res = await fetch(`${SCRIPT_URL}?getProjects`);
-    return await res.json();
-  }
+async function fetchProjects() {
+  const res = await fetch(`${SCRIPT_URL}?getProjects`);
+  return await res.json();
+}
 
-  function updateSnapshot(projects, tasks) {
-    document.getElementById("projectsCount").innerText = `Projects: ${projects}`;
-    document.getElementById("tasksCount").innerText = `Tasks: ${tasks}`;
-  }
+function updateSnapshot(projects, tasks) {
+  document.getElementById("projectsCount").innerText = `Projects: ${projects}`;
+  document.getElementById("tasksCount").innerText = `Tasks: ${tasks}`;
+}
 
-  function populateTable(projects) {
-    const tbody = document.querySelector("tbody");
-    tbody.innerHTML = "";
-    projects.forEach(p => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${p["Project Name"] || ""}</td>
-        <td>${p["Start Date"] || ""}</td>
-        <td>${p["End Date"] || ""}</td>
-        <td>${p["Project Owner"] || ""}</td>
-        <td>${p["Status"] || ""}</td>
-      `;
-      tbody.appendChild(row);
-    });
-  }
-
-  function drawChart(dataArr) {
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(() => {
-      const data = google.visualization.arrayToDataTable(dataArr);
-      const options = {
-        title: 'Project Status Overview',
-        pieHole: 0.4,
-        colors: ['#1976d2', '#f4b400', '#db4437'],
-        chartArea: {width: '80%', height: '70%'},
-        legend: {position: 'bottom'}
-      };
-      const chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
-    });
-  }
-
-  async function initializeDashboard() {
-    try {
-      const [counts, projects] = await Promise.all([fetchCounts(), fetchProjects()]);
-      updateSnapshot(counts.projects, counts.tasks);
-      populateTable(projects);
-
-      const statusMap = {};
-      projects.forEach(p => {
-        const status = p["Status"] || "Unknown";
-        statusMap[status] = (statusMap[status] || 0) + 1;
-      });
-
-      const chartData = [['Status', 'Projects']];
-      for (const [status, count] of Object.entries(statusMap)) {
-        chartData.push([status, count]);
-      }
-
-      drawChart(chartData);
-    } catch (err) {
-      console.error("Dashboard Error:", err);
-    }
-  }
-
-  document.getElementById('darkToggle').addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
+function populateTable(projects) {
+  const tbody = document.querySelector("tbody");
+  tbody.innerHTML = "";
+  projects.forEach(p => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${p["Project Name"] || ""}</td>
+      <td>${p["Start Date"] || ""}</td>
+      <td>${p["End Date"] || ""}</td>
+      <td>${p["Project Owner"] || ""}</td>
+      <td>${p["Status"] || ""}</td>
+    `;
+    tbody.appendChild(row);
   });
+}
 
-  initializeDashboard();
+function drawChart(dataArr) {
+  const data = google.visualization.arrayToDataTable(dataArr);
+  const options = {
+    title: 'Project Status Overview',
+    pieHole: 0.4,
+    colors: ['#1976d2', '#f4b400', '#db4437'],
+    chartArea: {width: '80%', height: '70%'},
+    legend: {position: 'bottom'}
+  };
+  const chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+  chart.draw(data, options);
+}
+
+function drawGantt(projects) {
+  google.charts.load('current', {'packages':['gantt']});
+  google.charts.setOnLoadCallback(() => {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Task ID');
+    data.addColumn('string', 'Task Name');
+    data.addColumn('string', 'Resource');
+    data.addColumn('date', 'Start Date');
+    data.addColumn('date', 'End Date');
+    data.addColumn('number', 'Duration');
+    data.addColumn('number', 'Percent Complete');
+    data.addColumn('string', 'Dependencies');
+
+    projects.forEach((p, i) => {
+      const name = p["Project Name"] || `Task${i}`;
+      const start = new Date(p["Start Date"]);
+      const end = new Date(p["End Date"]);
+      const status = (p["Status"] || "").toLowerCase();
+
+      let color = '#1976d2';
+      if (status === 'paused') color = '#f4b400';
+      if (status === 'planning') color = '#db4437';
+
+      data.addRow([
+        name, name, color, start, end, null, 100, null
+      ]);
+    });
+
+    const options = {
+      height: 400,
+      gantt: {
+        criticalPathEnabled: false,
+        palette: [
+          {
+            color: '#1976d2', dark: '#115293', light: '#64b5f6'
+          },
+          {
+            color: '#f4b400', dark: '#c49200', light: '#ffe082'
+          },
+          {
+            color: '#db4437', dark: '#a52714', light: '#ef9a9a'
+          }
+        ]
+      }
+    };
+    const chart = new google.visualization.Gantt(document.getElementById('gantt_div'));
+    chart.draw(data, options);
+  });
+}
+
+async function initializeDashboard() {
+  try {
+    const [counts, projects] = await Promise.all([fetchCounts(), fetchProjects()]);
+    updateSnapshot(counts.projects, counts.tasks);
+    populateTable(projects);
+
+    const statusMap = {};
+    projects.forEach(p => {
+      const status = p["Status"] || "Unknown";
+      statusMap[status] = (statusMap[status] || 0) + 1;
+    });
+
+    const chartData = [['Status', 'Projects']];
+    for (const [status, count] of Object.entries(statusMap)) {
+      chartData.push([status, count]);
+    }
+
+    drawChart(chartData);
+    drawGantt(projects);
+  } catch (err) {
+    console.error("Dashboard Error:", err);
+  }
+}
+
+document.getElementById('darkToggle').addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+});
+
+document.getElementById('exportBtn').addEventListener('click', () => {
+  window.print();
+});
+
+initializeDashboard();
 </script>
 
 </body>
