@@ -58,6 +58,14 @@
     .export-card button:hover {
       background: #145bb5;
     }
+    @media print {
+      nav, header {
+        display: block !important;
+      }
+      .export-card button {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
