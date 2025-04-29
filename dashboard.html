@@ -74,6 +74,14 @@
       max-width: 600px;
       margin: 30px auto;
     }
+    iframe {
+      width: 90%;
+      height: 500px;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
+    }
     .dark-mode {
       background: #121212;
       color: #e0e0e0;
@@ -132,6 +140,7 @@
   <a href="projects.html">Add Project</a>
   <a href="task-commander.html">Command Centre</a>
   <a href="project-commander.html">Project Commander</a>
+  <a href="gantt.html">Gantt Chart</a>
 </nav>
 
 <button id="darkToggle">🌙 Toggle Dark Mode</button>
@@ -142,7 +151,6 @@
 </div>
 
 <h2>📋 Active Projects Overview</h2>
-
 <div class="table-container">
   <table>
     <thead>
@@ -154,15 +162,17 @@
         <th>Status</th>
       </tr>
     </thead>
-    <tbody>
-    </tbody>
+    <tbody></tbody>
   </table>
 </div>
 
 <div id="chart_div"></div>
 
+<h2>📊 Gantt Overview</h2>
+<iframe src="gantt.html"></iframe>
+
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUVlwUwIJim2ZQd73aKCRq8-ypobne_T7PuOl44Q2XOilf6Ktvq9IJWkfjeiegI8w6/exec"; // Replace YOUR_SCRIPT_ID
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUVlwUwIJim2ZQd73aKCRq8-ypobne_T7PuOl44Q2XOilf6Ktvq9IJWkfjeiegI8w6/exec";
 
   async function fetchCounts() {
     const res = await fetch(`${SCRIPT_URL}?getCounts`);
