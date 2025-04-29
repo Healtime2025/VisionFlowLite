@@ -54,6 +54,16 @@
       background: #1976d2;
       color: white;
     }
+    #pdfBtn {
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: #1976d2;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -71,6 +81,8 @@
   <a href="project-commander.html">Project Commander</a>
   <a href="gantt.html">Royal Gantt Chart</a>
 </nav>
+
+<button id="pdfBtn" onclick="window.print()">🖨️ Download as PDF</button>
 
 <div class="table-container">
   <h2>📋 Project Overview</h2>
@@ -192,3 +204,4 @@ init();
 
 </body>
 </html>
+
