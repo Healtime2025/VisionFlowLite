@@ -1,0 +1,69 @@
+<!-- CoreNote.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CoreNote | VisionFlow</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+    h2 {
+      color: #1976d2;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      resize: vertical;
+    }
+    input, button {
+      margin-top: 12px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 25px;
+      border: 2px solid #1976d2;
+      background-color: white;
+      color: #1976d2;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1976d2;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h2>Capture a Note</h2>
+  <textarea id="noteInput" placeholder="Type your note or meeting minutes here..."></textarea><br>
+  <input type="text" id="authorInput" placeholder="Your name" /><br>
+  <button onclick="submitNote()">Save Note</button>
+  <button onclick="viewNotes()">View Notes</button>
+
+  <script>
+    function submitNote() {
+      const note = document.getElementById("noteInput").value;
+      const author = document.getElementById("authorInput").value;
+      if (!note || !author) {
+        alert("Please fill in both the note and your name.");
+        return;
+      }
+
+      google.script.run.withSuccessHandler(() => {
+        alert("✅ Note saved!");
+        document.getElementById("noteInput").value = '';
+      }).saveNote(note, author);
+    }
+
+    function viewNotes() {
+      window.open('https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID_HERE/edit#gid=0', '_blank');
+    }
+  </script>
+</body>
+</html>
